@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Triangle_and_Matrix_classes
+namespace Abstract_class_example_project
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

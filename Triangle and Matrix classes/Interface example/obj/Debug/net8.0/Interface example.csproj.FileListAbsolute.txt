@@ -1,0 +1,15 @@
+C:\Secret\Fork\Triangle and Matrix\Triangle and Matrix classes\Interface example\bin\Debug\net8.0\Interface example.exe
+C:\Secret\Fork\Triangle and Matrix\Triangle and Matrix classes\Interface example\bin\Debug\net8.0\Interface example.deps.json
+C:\Secret\Fork\Triangle and Matrix\Triangle and Matrix classes\Interface example\bin\Debug\net8.0\Interface example.runtimeconfig.json
+C:\Secret\Fork\Triangle and Matrix\Triangle and Matrix classes\Interface example\bin\Debug\net8.0\Interface example.dll
+C:\Secret\Fork\Triangle and Matrix\Triangle and Matrix classes\Interface example\bin\Debug\net8.0\Interface example.pdb
+C:\Secret\Fork\Triangle and Matrix\Triangle and Matrix classes\Interface example\obj\Debug\net8.0\Interface example.GeneratedMSBuildEditorConfig.editorconfig
+C:\Secret\Fork\Triangle and Matrix\Triangle and Matrix classes\Interface example\obj\Debug\net8.0\Interface example.AssemblyInfoInputs.cache
+C:\Secret\Fork\Triangle and Matrix\Triangle and Matrix classes\Interface example\obj\Debug\net8.0\Interface example.AssemblyInfo.cs
+C:\Secret\Fork\Triangle and Matrix\Triangle and Matrix classes\Interface example\obj\Debug\net8.0\Interface example.csproj.CoreCompileInputs.cache
+C:\Secret\Fork\Triangle and Matrix\Triangle and Matrix classes\Interface example\obj\Debug\net8.0\Interface example.sourcelink.json
+C:\Secret\Fork\Triangle and Matrix\Triangle and Matrix classes\Interface example\obj\Debug\net8.0\Interface example.dll
+C:\Secret\Fork\Triangle and Matrix\Triangle and Matrix classes\Interface example\obj\Debug\net8.0\refint\Interface example.dll
+C:\Secret\Fork\Triangle and Matrix\Triangle and Matrix classes\Interface example\obj\Debug\net8.0\Interface example.pdb
+C:\Secret\Fork\Triangle and Matrix\Triangle and Matrix classes\Interface example\obj\Debug\net8.0\Interface example.genruntimeconfig.cache
+C:\Secret\Fork\Triangle and Matrix\Triangle and Matrix classes\Interface example\obj\Debug\net8.0\ref\Interface example.dll
