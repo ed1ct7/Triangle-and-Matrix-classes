@@ -4,17 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Интерфейсы
+namespace Triangle_and_Matrix_classes.Interfaces
 {
-    interface IDrawable
+    public interface Matrix
     {
         void Draw();
     }
-    interface IGeometrical
+    public interface IGeometrical
     {
         void GetPerimeter();
         void GetArea();
     }
-
-
 }

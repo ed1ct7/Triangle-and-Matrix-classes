@@ -4,9 +4,25 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Triangle_and_Matrix_classes.Views"
+        xmlns:vm="clr-namespace:Triangle_and_Matrix_classes.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+     
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
 
+    <Grid>
+        <ListBox ItemsSource="{Binding Objects}"
+                 SelectedItem="{Binding SelectedObject}"
+                 ></ListBox>
+
+        <Grid x:Name="Triangle">
+            
+        </Grid>
+        
+        <Grid x:Name="Matrix">
+            
+        </Grid>
     </Grid>
 </Window>
