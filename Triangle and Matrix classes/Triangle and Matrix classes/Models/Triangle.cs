@@ -37,11 +37,13 @@ namespace Triangle_and_Matrix_classes.Models
     };
     public class Triangle : INotifyPropertyChanged
     {
-        Triangle(double a, double b, double c)
+        public Triangle(double a, double b, double c)
         {
             _sides = new Parameters { A = a, B = b, C = c };
-
         }
+        public Triangle() { }
+
+
         private Parameters _sides;
         public Parameters Sides
         {

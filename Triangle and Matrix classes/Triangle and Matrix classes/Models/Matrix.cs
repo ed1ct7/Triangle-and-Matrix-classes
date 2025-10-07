@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -13,27 +14,28 @@ using System.Threading.Tasks;
 
 namespace Triangle_and_Matrix_classes.Models
 {
-    class Matrix : INotifyPropertyChanged
+    public class Matrix
     {
-        public Matrix(List<List<double>> MatrixElements)
+        public Matrix(ObservableCollection<double> MatrixElements)
         {
 			this.MatrixElements = MatrixElements;
         }
-        public Matrix() { 
-			
-		}
+        public Matrix() {}
+
 		private int _size;
 		public int Size
 		{
 			get { return _size; }
-			set { _size = value; OnPropertyChanged(); }
+			set { _size = value; }
 		}
-		private List<List<double>> _matrixElements;
-		public List<List<double>> MatrixElements
+
+		private ObservableCollection<double> _matrixElements;
+		public ObservableCollection<double>  MatrixElements
         {
 			get { return _matrixElements; }
-			set { _matrixElements = value; OnPropertyChanged(); }
+			set { _matrixElements = value; }
 		}
+
 		public void CheckMatrixType()
 		{
 
@@ -53,12 +55,6 @@ namespace Triangle_and_Matrix_classes.Models
         public void Multification(double num)
         {
 
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
