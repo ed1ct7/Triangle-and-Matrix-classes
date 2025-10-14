@@ -69,34 +69,53 @@
 
                         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,5">
                             <TextBlock Text="Размер:" VerticalAlignment="Center"/>
-                            <TextBox Text="{Binding Size}" Width="40" Margin="5,0"/>
-                            <Button Content="Изменить размер" Command="{Binding ResizeCommand}" Margin="10,0"/>
+                            <TextBox Text="{Binding Size, Mode=TwoWay}" Width="40" Margin="5,0"/>
+
                         </StackPanel>
 
                         <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" Margin="0,10" Padding="5">
-                            <ItemsControl ItemsSource="{Binding Elements}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <UniformGrid Columns="{Binding Size}" Rows="{Binding Size}"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBox Text="{Binding Value}" 
-                                            Width="50" 
-                                            Height="25" 
-                                            Margin="2"
-                                            HorizontalContentAlignment="Center"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                            <StackPanel>
+                                <ItemsControl ItemsSource="{Binding Elements, Mode=TwoWay}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Columns="{Binding Size}" Rows="{Binding Size}"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding Value}" 
+                                                Width="50" 
+                                                Height="25" 
+                                                Margin="2"
+                                                HorizontalContentAlignment="Center"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <ListBox ItemsSource="{Binding Operations}"></ListBox>
+
+                                <ItemsControl ItemsSource="{Binding ElementsAd, Mode=TwoWay}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Columns="{Binding Size}" Rows="{Binding Size}"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding Value}" 
+                                                Width="50" 
+                                                Height="25" 
+                                                Margin="2"
+                                                HorizontalContentAlignment="Center"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <Button Grid.Row="2" 
+                                     Content="Вычислить" 
+                                     Command="{Binding CalculateCommand}"
+                                     Margin="0,10" Height="30"/>
+                            </StackPanel>
                         </Border>
-
-
-                        <Button Grid.Row="2" 
-                                Content="Вычислить" 
-                                Command="{Binding CalculateCommand}"
-                                Margin="0,10" Height="30"/>
 
                         <TextBlock Grid.Row="3" Text="{Binding Result}" Margin="0,10"/>
                     </Grid>

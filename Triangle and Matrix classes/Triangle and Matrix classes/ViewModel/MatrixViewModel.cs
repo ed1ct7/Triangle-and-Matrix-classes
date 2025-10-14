@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using Triangle_and_Matrix_classes.Models;
 
 namespace Triangle_and_Matrix_classes.ViewModel
@@ -16,28 +10,51 @@ namespace Triangle_and_Matrix_classes.ViewModel
         public MatrixViewModel()
         {
             Matrix = new Matrix();
+            MatrixAd = new Matrix();
+            OnResize();
         }
+
         private Matrix _matrix;
         public Matrix Matrix
         {
             get => _matrix;
             set
             {
-                _matrix = value; 
+                _matrix = value;
                 OnPropertyChanged();
             }
         }
+
+        private Matrix _matrixAd;
+        public Matrix MatrixAd
+        {
+            get => _matrixAd;
+            set
+            {
+                _matrixAd = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<string> Operations
+        {
+            get { return Matrix.Operations; }
+        }
+
+
         public int Size
         {
             get => Matrix.Size;
-            set 
-            { 
+            set
+            {
                 Matrix.Size = value;
+                MatrixAd.Size = value; // Не забудьте обновить размер второй матрицы!
                 OnPropertyChanged();
-                //OnResize();
+                OnResize();
             }
         }
-        public ObservableCollection<double> Elements
+
+        public ObservableCollection<MatrixElement> Elements
         {
             get => Matrix.MatrixElements;
             set
@@ -46,10 +63,37 @@ namespace Triangle_and_Matrix_classes.ViewModel
                 OnPropertyChanged();
             }
         }
-        //public void OnResize()
-        //{
-        //    Elements.Add(Size);
-        //}
+
+        public ObservableCollection<MatrixElement> ElementsAd
+        {
+            get => MatrixAd.MatrixElements;
+            set
+            {
+                MatrixAd.MatrixElements = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+
+        public void OnResize()
+        {
+            var newElements = new ObservableCollection<MatrixElement>();
+            var newElementsAd = new ObservableCollection<MatrixElement>();
+
+            for (int i = 0; i < Size * Size; i++)
+            {
+                newElements.Add(new MatrixElement());
+                newElementsAd.Add(new MatrixElement());
+            }
+
+            Elements = newElements;
+            ElementsAd = newElementsAd;
+
+            OnPropertyChanged(nameof(Elements));
+            OnPropertyChanged(nameof(ElementsAd));
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

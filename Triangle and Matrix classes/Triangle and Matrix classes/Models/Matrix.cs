@@ -7,54 +7,199 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-//12.Создать класс квадратная матрица, поля класса – размерность и элементы матрицы. 
-//Методы класса: проверка, является ли матрица верхнетреугольной или нижнетреугольной,
-//вывод матрицы. В классе предусмотреть методы: сложение, вычитание, умножение матриц,
-//умножение матрицы на число.
-
 namespace Triangle_and_Matrix_classes.Models
 {
+    public class MatrixElement : INotifyPropertyChanged
+    {
+        private double _value;
+        public double Value
+        {
+            get => _value;
+            set
+            {
+                _value = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
     public class Matrix
     {
-        public Matrix(ObservableCollection<double> MatrixElements)
+        public static readonly ObservableCollection<string> Operations
+            = new ObservableCollection<string>
+            {
+                "+", "-", "*", "compare"
+            };
+
+        public Matrix()
         {
-			this.MatrixElements = MatrixElements;
+            MatrixElements = new ObservableCollection<MatrixElement>();
         }
-        public Matrix() {}
 
-		private int _size;
-		public int Size
-		{
-			get { return _size; }
-			set { _size = value; }
-		}
-
-		private ObservableCollection<double> _matrixElements;
-		public ObservableCollection<double>  MatrixElements
+        public Matrix(ObservableCollection<MatrixElement> matrixElements)
         {
-			get { return _matrixElements; }
-			set { _matrixElements = value; }
-		}
+            this.MatrixElements = matrixElements;
+        }
 
-		public void CheckMatrixType()
-		{
-
-		}
-		public void Summation(Matrix matrix)
-		{
-
-		}
-		public void Sutraction(Matrix matrix)
-		{
-
-		}
-		public void Multification(Matrix matrix)
-		{
-
-		}
-        public void Multification(double num)
+        private int _size = 2;
+        public int Size
         {
+            get { return _size; }
+            set { _size = value; }
+        }
 
+        private ObservableCollection<MatrixElement> _matrixElements;
+        public ObservableCollection<MatrixElement> MatrixElements
+        {
+            get { return _matrixElements; }
+            set { _matrixElements = value; }
+        }
+
+        // Проверка, является ли матрица верхнетреугольной
+        public bool IsUpperTriangular()
+        {
+            for (int i = 1; i < Size; i++)
+            {
+                for (int j = 0; j < i; j++)
+                {
+                    if (GetElement(i, j) != 0)
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        // Проверка, является ли матрица нижнетреугольной
+        public bool IsLowerTriangular()
+        {
+            for (int i = 0; i < Size; i++)
+            {
+                for (int j = i + 1; j < Size; j++)
+                {
+                    if (GetElement(i, j) != 0)
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        // Сложение матриц
+        public Matrix Summation(Matrix other)
+        {
+            if (Size != other.Size)
+                throw new ArgumentException("Матрицы должны быть одного размера");
+
+            var result = new Matrix();
+            result.Size = Size;
+            result.MatrixElements = new ObservableCollection<MatrixElement>();
+
+            for (int i = 0; i < Size * Size; i++)
+            {
+                result.MatrixElements.Add(new MatrixElement
+                {
+                    Value = this.MatrixElements[i].Value + other.MatrixElements[i].Value
+                });
+            }
+
+            return result;
+        }
+
+        // Вычитание матриц
+        public Matrix Subtraction(Matrix other)
+        {
+            if (Size != other.Size)
+                throw new ArgumentException("Матрицы должны быть одного размера");
+
+            var result = new Matrix();
+            result.Size = Size;
+            result.MatrixElements = new ObservableCollection<MatrixElement>();
+
+            for (int i = 0; i < Size * Size; i++)
+            {
+                result.MatrixElements.Add(new MatrixElement
+                {
+                    Value = this.MatrixElements[i].Value - other.MatrixElements[i].Value
+                });
+            }
+
+            return result;
+        }
+
+        // Умножение матриц
+        public Matrix Multiplication(Matrix other)
+        {
+            if (Size != other.Size)
+                throw new ArgumentException("Матрицы должны быть одного размера");
+
+            var result = new Matrix();
+            result.Size = Size;
+            result.MatrixElements = new ObservableCollection<MatrixElement>();
+
+            for (int i = 0; i < Size; i++)
+            {
+                for (int j = 0; j < Size; j++)
+                {
+                    double sum = 0;
+                    for (int k = 0; k < Size; k++)
+                    {
+                        sum += GetElement(i, k) * other.GetElement(k, j);
+                    }
+                    result.MatrixElements.Add(new MatrixElement { Value = sum });
+                }
+            }
+
+            return result;
+        }
+
+        // Умножение матрицы на число
+        public Matrix Multiplication(double number)
+        {
+            var result = new Matrix();
+            result.Size = Size;
+            result.MatrixElements = new ObservableCollection<MatrixElement>();
+
+            for (int i = 0; i < Size * Size; i++)
+            {
+                result.MatrixElements.Add(new MatrixElement
+                {
+                    Value = this.MatrixElements[i].Value * number
+                });
+            }
+
+            return result;
+        }
+
+        // Сравнение матриц
+        public bool Compare(Matrix other)
+        {
+            if (Size != other.Size)
+                return false;
+
+            for (int i = 0; i < Size * Size; i++)
+            {
+                if (Math.Abs(this.MatrixElements[i].Value - other.MatrixElements[i].Value) > 0.0001)
+                    return false;
+            }
+
+            return true;
+        }
+
+        // Вспомогательный метод для получения элемента по индексам
+        private double GetElement(int row, int col)
+        {
+            return MatrixElements[row * Size + col].Value;
+        }
+
+        // Вспомогательный метод для установки элемента по индексам
+        private void SetElement(int row, int col, double value)
+        {
+            MatrixElements[row * Size + col].Value = value;
         }
     }
 }
