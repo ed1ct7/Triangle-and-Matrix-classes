@@ -75,7 +75,8 @@
 
                         <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" Margin="0,10" Padding="5">
                             <StackPanel>
-                                <ItemsControl ItemsSource="{Binding Elements, Mode=TwoWay}">
+                               <!--Первая матрица-->
+                                <ItemsControl ItemsSource="{Binding MatrixF.MatrixElements, Mode=TwoWay}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <UniformGrid Columns="{Binding Size}" Rows="{Binding Size}"/>
@@ -92,9 +93,10 @@
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
 
-                                <ListBox ItemsSource="{Binding Operations}"></ListBox>
-
-                                <ItemsControl ItemsSource="{Binding ElementsAd, Mode=TwoWay}">
+                                <ListBox ItemsSource="{Binding Operations}" SelectedItem="{Binding SelectedItem}"></ListBox>
+                                
+                                <!--Вторая матрица-->
+                                <ItemsControl ItemsSource="{Binding MatrixS.MatrixElements, Mode=TwoWay}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <UniformGrid Columns="{Binding Size}" Rows="{Binding Size}"/>
@@ -110,10 +112,29 @@
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
+                                
                                 <Button Grid.Row="2" 
                                      Content="Вычислить" 
                                      Command="{Binding CalculateCommand}"
                                      Margin="0,10" Height="30"/>
+
+                                <!--Результирующая матрица-->
+                                <ItemsControl ItemsSource="{Binding MatrixR.MatrixElements, Mode=TwoWay}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Columns="{Binding Size}" Rows="{Binding Size}"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding Value}" 
+                                            Width="50" 
+                                            Height="25" 
+                                            Margin="2"
+                                            HorizontalContentAlignment="Center"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
                             </StackPanel>
                         </Border>
 

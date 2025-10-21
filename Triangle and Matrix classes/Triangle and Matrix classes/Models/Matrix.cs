@@ -29,8 +29,13 @@ namespace Triangle_and_Matrix_classes.Models
         }
     }
 
-    public class Matrix
+    public class Matrix : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         public static readonly ObservableCollection<string> Operations
             = new ObservableCollection<string>
             {
@@ -58,7 +63,9 @@ namespace Triangle_and_Matrix_classes.Models
         public ObservableCollection<MatrixElement> MatrixElements
         {
             get { return _matrixElements; }
-            set { _matrixElements = value; }
+            set { _matrixElements = value;
+                OnPropertyChanged();
+            }
         }
 
         // Проверка, является ли матрица верхнетреугольной

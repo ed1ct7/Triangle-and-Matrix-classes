@@ -1,7 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using Triangle_and_Matrix_classes.Models;
+using Triangle_and_Matrix_classes.ViewModels.Commands;
 
 namespace Triangle_and_Matrix_classes.ViewModel
 {
@@ -9,89 +11,106 @@ namespace Triangle_and_Matrix_classes.ViewModel
     {
         public MatrixViewModel()
         {
-            Matrix = new Matrix();
-            MatrixAd = new Matrix();
+            MatrixF = new Matrix();
+            MatrixS = new Matrix();
+            MatrixR = new Matrix();
             OnResize();
+            CalculateCommand = new RelayCommand(Calculate);
         }
 
-        private Matrix _matrix;
-        public Matrix Matrix
+        public ICommand CalculateCommand { get; }
+        private void Calculate(object parameter)
         {
-            get => _matrix;
-            set
+            switch (SelectedItem)
             {
-                _matrix = value;
+                case "+":
+                    MatrixR.MatrixElements = MatrixF.Summation(MatrixS).MatrixElements;
+                    break;
+                case "-":
+                    MatrixR.MatrixElements = MatrixF.Subtraction(MatrixS).MatrixElements;
+                    break;
+                case "/":
+                    MatrixR.MatrixElements = MatrixF.Multiplication(MatrixS).MatrixElements;
+                    break;
+                case "compare":
+                    break;
+            }
+        }
+
+        public ObservableCollection<string> Operations{
+            get {  return Matrix.Operations; }  
+            }
+
+        private string _selectedItem;
+
+        public string SelectedItem
+        {
+            get { return _selectedItem; }
+            set { _selectedItem = value;
                 OnPropertyChanged();
             }
         }
 
-        private Matrix _matrixAd;
-        public Matrix MatrixAd
+        private Matrix _matrixF;
+        public Matrix MatrixF
         {
-            get => _matrixAd;
+            get => _matrixF;
             set
             {
-                _matrixAd = value;
+                _matrixF = value;
                 OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<string> Operations
+        private Matrix _matrixS;
+        public Matrix MatrixS
         {
-            get { return Matrix.Operations; }
+            get => _matrixS;
+            set
+            {
+                _matrixS = value;
+                OnPropertyChanged();
+            }
         }
 
+        private Matrix _matrixR;
+        public Matrix MatrixR
+        {
+            get => _matrixR;
+            set
+            {
+                _matrixR = value;
+                OnPropertyChanged();
+            }
+        }
 
         public int Size
         {
-            get => Matrix.Size;
+            get => MatrixF.Size;
             set
             {
-                Matrix.Size = value;
-                MatrixAd.Size = value; // Не забудьте обновить размер второй матрицы!
+                MatrixF.Size = value;
+                MatrixS.Size = value;
+                MatrixR.Size = value;
                 OnPropertyChanged();
                 OnResize();
             }
         }
 
-        public ObservableCollection<MatrixElement> Elements
-        {
-            get => Matrix.MatrixElements;
-            set
-            {
-                Matrix.MatrixElements = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollection<MatrixElement> ElementsAd
-        {
-            get => MatrixAd.MatrixElements;
-            set
-            {
-                MatrixAd.MatrixElements = value;
-                OnPropertyChanged();
-            }
-        }
-
-
-
         public void OnResize()
         {
-            var newElements = new ObservableCollection<MatrixElement>();
-            var newElementsAd = new ObservableCollection<MatrixElement>();
-
+            MatrixF.MatrixElements.Clear();
+            MatrixS.MatrixElements.Clear();
+            MatrixR.MatrixElements.Clear();
             for (int i = 0; i < Size * Size; i++)
             {
-                newElements.Add(new MatrixElement());
-                newElementsAd.Add(new MatrixElement());
+                MatrixF.MatrixElements.Add(new MatrixElement());
+                MatrixS.MatrixElements.Add(new MatrixElement());
+                MatrixR.MatrixElements.Add(new MatrixElement());
             }
-
-            Elements = newElements;
-            ElementsAd = newElementsAd;
-
-            OnPropertyChanged(nameof(Elements));
-            OnPropertyChanged(nameof(ElementsAd));
+            OnPropertyChanged(nameof(MatrixF.MatrixElements));
+            OnPropertyChanged(nameof(MatrixS.MatrixElements));
+            OnPropertyChanged(nameof(MatrixR.MatrixElements));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
