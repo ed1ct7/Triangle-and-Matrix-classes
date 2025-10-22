@@ -29,10 +29,11 @@ namespace Triangle_and_Matrix_classes.ViewModel
                 case "-":
                     MatrixR.MatrixElements = MatrixF.Subtraction(MatrixS).MatrixElements;
                     break;
-                case "/":
+                case "*":
                     MatrixR.MatrixElements = MatrixF.Multiplication(MatrixS).MatrixElements;
                     break;
                 case "compare":
+                    Console.WriteLine(MatrixF.Volume());
                     break;
             }
         }

@@ -29,7 +29,7 @@ namespace Triangle_and_Matrix_classes.Models
         }
     }
 
-    public class Matrix : INotifyPropertyChanged
+    public class Matrix : INotifyPropertyChanged, IComparable<Matrix>
     {
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -69,31 +69,37 @@ namespace Triangle_and_Matrix_classes.Models
         }
 
         // Проверка, является ли матрица верхнетреугольной
-        public bool IsUpperTriangular()
+        public bool IsUpperTriangular
         {
-            for (int i = 1; i < Size; i++)
+            get
             {
-                for (int j = 0; j < i; j++)
+                for (int i = 1; i < Size; i++)
                 {
-                    if (GetElement(i, j) != 0)
-                        return false;
+                    for (int j = 0; j < i; j++)
+                    {
+                        if (GetElement(i, j) != 0)
+                            return false;
+                    }
                 }
+                return true;
             }
-            return true;
         }
 
         // Проверка, является ли матрица нижнетреугольной
-        public bool IsLowerTriangular()
+        public bool IsLowerTriangular
         {
-            for (int i = 0; i < Size; i++)
+            get
             {
-                for (int j = i + 1; j < Size; j++)
+                for (int i = 0; i < Size; i++)
                 {
-                    if (GetElement(i, j) != 0)
-                        return false;
+                    for (int j = i + 1; j < Size; j++)
+                    {
+                        if (GetElement(i, j) != 0)
+                            return false;
+                    }
                 }
+                return true;
             }
-            return true;
         }
 
         // Сложение матриц
@@ -178,25 +184,8 @@ namespace Triangle_and_Matrix_classes.Models
                     Value = this.MatrixElements[i].Value * number
                 });
             }
-
             return result;
         }
-
-        // Сравнение матриц
-        public bool Compare(Matrix other)
-        {
-            if (Size != other.Size)
-                return false;
-
-            for (int i = 0; i < Size * Size; i++)
-            {
-                if (Math.Abs(this.MatrixElements[i].Value - other.MatrixElements[i].Value) > 0.0001)
-                    return false;
-            }
-
-            return true;
-        }
-
         // Вспомогательный метод для получения элемента по индексам
         private double GetElement(int row, int col)
         {
@@ -207,6 +196,45 @@ namespace Triangle_and_Matrix_classes.Models
         private void SetElement(int row, int col, double value)
         {
             MatrixElements[row * Size + col].Value = value;
+        }
+
+        public double Determinant
+        {
+            get
+            {
+                double deter = 0;
+                double temp = 1;
+                for (int i = 0, j = 0, l = 0;
+                    l <= Size-1;
+                    l = (i >= Size ? l += 1 : l), // количество итераций
+                    j = (i >= Size ? l : (++j >= Size ? 0: j)), // проход по столбцам
+                    i = (i >= Size ? 0 : i += 1)) // проход по строкам
+                {
+                    if(i >= Size)
+                    {
+                        deter += temp;
+                        temp = 1;
+                    }
+                    else
+                    {
+                        temp *= GetElement(i, j);
+                    }
+                }
+
+                return deter;
+            }    
+            set;
+        }
+
+        public double Volume()
+        {
+            return Determinant;
+        }
+
+        public int CompareTo(Matrix? other)
+        {
+            if (other == null) throw new Exception("Нельзя сравнить объекты");
+            return Volume().CompareTo(other.Volume());
         }
     }
 }
