@@ -74,9 +74,16 @@
                         </StackPanel>
 
                         <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" Margin="0,10" Padding="5">
-                            <StackPanel>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
                                <!--Первая матрица-->
-                                <ItemsControl ItemsSource="{Binding MatrixF.MatrixElements, Mode=TwoWay}">
+                                <ItemsControl Grid.Row="0" ItemsSource="{Binding MatrixF.MatrixElements, Mode=TwoWay}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <UniformGrid Columns="{Binding Size}" Rows="{Binding Size}"/>
@@ -93,10 +100,10 @@
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
 
-                                <ListBox ItemsSource="{Binding Operations}" SelectedItem="{Binding SelectedItem}"></ListBox>
+                                <ListBox Grid.Row="1" ItemsSource="{Binding Operations}" SelectedItem="{Binding SelectedItem}"></ListBox>
                                 
                                 <!--Вторая матрица-->
-                                <ItemsControl ItemsSource="{Binding MatrixS.MatrixElements, Mode=TwoWay}">
+                                <ItemsControl Grid.Row="2" ItemsSource="{Binding MatrixS.MatrixElements, Mode=TwoWay}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <UniformGrid Columns="{Binding Size}" Rows="{Binding Size}"/>
@@ -113,13 +120,14 @@
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
                                 
-                                <Button Grid.Row="2" 
+                                <Button Grid.Row="3" 
                                      Content="Вычислить" 
                                      Command="{Binding CalculateCommand}"
                                      Margin="0,10" Height="30"/>
 
                                 <!--Результирующая матрица-->
-                                <ItemsControl ItemsSource="{Binding MatrixR.MatrixElements, Mode=TwoWay}">
+                                <ItemsControl Grid.Row="4" 
+                                              ItemsSource="{Binding MatrixR.MatrixElements, Mode=TwoWay}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <UniformGrid Columns="{Binding Size}" Rows="{Binding Size}"/>
@@ -134,8 +142,22 @@
                                             HorizontalContentAlignment="Center"/>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
+                                    <ItemsControl.Style>
+                                        <Style TargetType="ItemsControl">
+                                            <Setter Property="Visibility" Value="Visible"></Setter>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding isCompare}"
+                                                             Value="True"
+                                                             >
+                                                    <Setter Property="Visibility" 
+                                                            Value="Collapsed"></Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ItemsControl.Style>
                                 </ItemsControl>
-                            </StackPanel>
+                                <TextBlock ></TextBlock>
+                            </Grid>
                         </Border>
 
                         <TextBlock Grid.Row="3" Text="{Binding Result}" Margin="0,10"/>

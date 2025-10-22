@@ -198,33 +198,115 @@ namespace Triangle_and_Matrix_classes.Models
             MatrixElements[row * Size + col].Value = value;
         }
 
+
         public double Determinant
         {
             get
             {
-                double deter = 0;
-                double temp = 1;
-                for (int i = 0, j = 0, l = 0;
-                    l <= Size-1;
-                    l = (i >= Size ? l += 1 : l), // количество итераций
-                    j = (i >= Size ? l : (++j >= Size ? 0: j)), // проход по столбцам
-                    i = (i >= Size ? 0 : i += 1)) // проход по строкам
+                if (Size == 1) return GetElement(0, 0);
+                if (Size == 2) return GetElement(0, 0) * GetElement(1, 1) - GetElement(0, 1) * GetElement(1, 0);
+                if (Size == 3)
                 {
-                    if(i >= Size)
-                    {
-                        deter += temp;
-                        temp = 1;
-                    }
-                    else
-                    {
-                        temp *= GetElement(i, j);
-                    }
-                }
+                    double deter = 0;
+                    double temp = 1;
 
-                return deter;
-            }    
-            set;
+                    //
+                    for (int i = 0, j = 0, l = 0;
+                        l <= Size - 1;
+                        l = (i >= Size ? l += 1 : l), // количество итераций
+                        j = (i >= Size ? l : (++j >= Size ? 0 : j)), // проход по столбцам
+                        i = (i >= Size ? 0 : i += 1)) // проход по строкам
+                    {
+                        if (i >= Size)
+                        {
+                            deter += temp;
+                            temp = 1;
+                        }
+                        else
+                        {
+                            temp *= GetElement(i, j);
+                        }
+                    }
+
+                    // 
+                    temp = 1;
+                    for (int i = 0, j = Size - 1, l = 0;
+                        l <= Size - 1;
+                        l = (i >= Size ? l += 1 : l), // количество итераций
+                        j = (i >= Size ? Size - 1 - l : (--j < 0 ? Size - 1 : j)), // проход по столбцам backwards
+                        i = (i >= Size ? 0 : i += 1)) // проход по строкам
+                    {
+                        if (i >= Size)
+                        {
+                            deter -= temp;
+                            temp = 1;
+                        }
+                        else
+                        {
+                            temp *= GetElement(i, j);
+                        }
+                    }
+
+                    return deter;
+                }
+                else
+                {
+
+                    double deter = 0;
+                    int[] perm = new int[Size];
+                    bool[] used = new bool[Size];
+                    int sign = 1;
+
+                    for (int i = 0; i < Size; i++)
+                    {
+                        perm[i] = i;
+                        used[i] = true;
+                    }
+
+                    for (int iteration = 0; ; iteration++)
+                    {
+                        double product = 1;
+                        for (int i = 0; i < Size; i++)
+                        {
+                            product *= GetElement(i, perm[i]);
+                        }
+                        deter += sign * product;
+
+                        if (!NextPermutation(perm, used, ref sign))
+                            break;
+                    }
+
+                    return deter;
+                }
+            }
         }
+
+        private bool NextPermutation(int[] perm, bool[] used, ref int sign)
+        {
+            int n = perm.Length;
+            int k = n - 2;
+
+            while (k >= 0 && perm[k] >= perm[k + 1])
+                k--;
+
+            if (k < 0)
+                return false;
+
+            int l = n - 1;
+            while (perm[k] >= perm[l])
+                l--;
+
+            int temp = perm[k];
+            perm[k] = perm[l];
+            perm[l] = temp;
+
+            Array.Reverse(perm, k + 1, n - k - 1);
+
+            sign *= -1;
+
+            return true;
+        }
+
 
         public double Volume()
         {

@@ -33,8 +33,35 @@ namespace Triangle_and_Matrix_classes.ViewModel
                     MatrixR.MatrixElements = MatrixF.Multiplication(MatrixS).MatrixElements;
                     break;
                 case "compare":
-                    Console.WriteLine(MatrixF.Volume());
+                    switch (MatrixF.CompareTo(MatrixS))
+                    {
+                        case -1:
+                            resultString = "-1";
+                            break;
+                        case 0:
+                            resultString = "0";
+                            break;
+                        case 1:
+                            resultString = "1";
+                            break;
+                    }
+                    ;
                     break;
+            }
+        }
+
+        public string resultString
+        {
+            get; 
+            set {
+                OnPropertyChanged();    
+            }
+        }
+
+        public bool isCompare
+        {
+            get {
+                return (SelectedItem == "compare" ? true : false);
             }
         }
 
